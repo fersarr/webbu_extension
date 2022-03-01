@@ -1,0 +1,54 @@
+{
+  "name": "Webbu",
+  "description": "Webbu is your assistant for the browser",
+  "version": "1.0",
+  "manifest_version": 3,
+  // service worker is a script that your browser runs in the background,
+  // separate from a web page, opening the door to features that don't need a web page or user interaction
+  // Remember:
+  // a) service workers are terminated when not in use and restarted when needed
+  // b) service workers don't have access to DOM.
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "activeTab", "scripting", "cookies", "tabs"],
+  "host_permissions": ["https://webbu.app/*", "http://localhost:7002/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/images/webbu_16.png",
+      "32": "/images/webbu_32.png",
+      "48": "/images/webbu_48.png",
+      "128": "/images/webbu_128.png"
+    }
+  },
+  "icons": {
+    "16": "/images/webbu_16.png",
+    "32": "/images/webbu_32.png",
+    "48": "/images/webbu_48.png",
+    "128": "/images/webbu_128.png"
+  },
+  // "options_page": "options.html",
+  "commands": {
+    "skill1": {
+      "suggested_key": "Ctrl+Shift+1",
+      "description": "Skill #1"
+    },
+    "skill2": {
+      "suggested_key": "Ctrl+Shift+2",
+      "description": "Skill #2"
+    },
+    "skill3": {
+      "suggested_key": {
+          "default": "Ctrl+Shift+9"
+      },
+      "description": "Skill #9"
+    },
+    "_execute_action": {
+      "description": "Find Skills",
+      "suggested_key": {
+          "default": "Ctrl+Shift+0"
+      }
+    }
+  }
+}

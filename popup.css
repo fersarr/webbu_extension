@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&family=Montserrat:wght@200;300&display=swap');
+
+:root {
+    --contentwidth: 70%;
+    --sp_fonts: 'Comfortaa', 'Montserrat', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+}
+
+html {
+    width: 350px;
+    height: 600px;
+    border: 2px solid white;
+}
+
+body {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #8EC5FC;
+    background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+    /*background: -webkit-linear-gradient(to top, #EC6EAD, #3494E6);  /* Chrome 10-25, Safari 5.1-6 */*/
+    /*background: linear-gradient(to bottom, #3494E6, #EC6EAD 100%);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    color:white;
+    font-family: var(--sp_fonts);
+}
+
+input {
+    font-family: var(--sp_fonts);
+}
+
+#content_div {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#search_div {
+    width: 100%;
+    height: 44px;
+    display: flex;
+}
+
+#search_skills_input {
+    flex: 4;
+    height: 100%;
+    font-size: 14px;
+    padding: 5px;
+    padding-left: 10px;
+    border-radius: 5px 0px 0px 5px;
+    border: 1px solid white;
+    margin-right: 0px;
+    box-sizing: border-box;
+}
+
+#search_button {
+    flex: 1;
+    height: 100%;
+    margin-left: 0px;
+    border-radius: 0px 5px 5px 0px;
+    border: 1px solid white;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+#search_button:hover {
+    opacity: 0.6;
+}
+
+#user_msg {
+    color: white;
+    padding-left: 5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.skill_row {
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px 5px 5px 5px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.skill_row:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.skill_title {
+    margin-top: 5px;
+    margin-bottom: 30px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.skill_bottom_row {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.skill_shortcut {
+    flex: 1;
+    color: white;
+    font-size: 14px;
+    line-height: 30px;  /*match skill_bottom_row for alignment*/
+}
+
+.skill_link {
+    flex:1;
+    text-align: center;
+    color: white;
+    vertical-align: text-bottom;
+    line-height: 30px;  /*match skill_bottom_row for alignment*/
+    text-decoration: none;
+}
+
+.skill_link:visited {
+    color: white;
+}
+
+.skill_link:hover {
+    opacity: 0.6;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+.skill_bottom_row_right {
+    flex: 1;
+    text-align: right;
+}
+
+.vote_img {
+    max-height: 18px;
+    max-width: 18px;
+    padding: 3px;
+}
+
+.vote_img:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+
+#create_skill_div {
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+#create_skill_link {
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#create_skill_link:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+#create_skill_link:visited {
+    text-decoration: none;
+    color: white;
+}
+
+#display_msg_div {
+    display: none;  /* starts invisible */
+    height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px 5px 5px 5px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+
+#display_msg {
+}
+
+
+#hide_display_msg {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+
+#hide_display_msg:hover {
+    opacity: 0.6;
+}
+
+
+#bottom_links_div {
+    position: fixed;
+    bottom: 10px;  /* align bottom */
+    left: 50%;  /* center horizontally */
+    transform: translateX(-50%);  /* center horizontally */
+    text-align: center;
+}
+
+.bottom_link {
+    display: inline-block;
+    color: white;
+    margin-right: 5px;
+}
+
+.bottom_link:visited {
+    color: white;
+}
+
+
+
+
