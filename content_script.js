@@ -23,10 +23,10 @@ function getCharCode(key) {
 }
 
 
-function launch_shortcut(pressedKey, metaKey, altKey, keyEventType) {
-    console.log('launch_shortcut: ' + pressedKey + ' (ctrl: ' + metaKey + ' alt: ' + altKey + ')');
+function launch_shortcut(pressedKey, metaKey, altKey, shiftKey, keyEventType) {
     var elem = document.activeElement;
-    console.log('launch_shortcut: on elem: ' + elem + ' id: ' + elem.id + ' class: ' + elem.className);
+    console.log('launch_shortcut: ' + pressedKey + ' (ctrl: ' + metaKey + ' alt: ' + altKey + ' shift: ' + shiftKey + ') on: ' + elem);
+    // console.log('launch_shortcut: on elem: ' + elem + ' id: ' + elem.id + ' class: ' + elem.className);
 
     var pressedKeyCode = getCharCode(pressedKey);
     var e = new KeyboardEvent(keyEventType, {  //keypress to type in google docs
@@ -39,7 +39,7 @@ function launch_shortcut(pressedKey, metaKey, altKey, keyEventType) {
         charCode : pressedKeyCode,
         which : pressedKeyCode,
         metaKey: metaKey,  // command on Mac
-        shiftKey : false,
+        shiftKey : shiftKey,
         altKey: altKey,
         ctrlKey: false,
         view: window,
@@ -47,7 +47,7 @@ function launch_shortcut(pressedKey, metaKey, altKey, keyEventType) {
     });
     elem.dispatchEvent(e);
 
-    console.log('launch_shortcut: finished : ' + pressedKey);
+    // console.log('launch_shortcut: finished ' + pressedKey);
 }
 
 
@@ -59,22 +59,25 @@ function parse_shortcut(shortcut) {
         var pressedKey = '';
         var metaKey = false;
         var altKey = false;
+        var shiftKey = false;
         for (var keyIdx = 0; keyIdx < shortcutParts.length; ++keyIdx) {
             var part = shortcutParts[keyIdx];
-            //console.log('part: ' + part);
-            if (part == 'ctrl') {
+            // console.log('parse_shortcut: part: ' + part);
+            if (part.toLowerCase() == 'ctrl') {
                 metaKey = true;
-            } else if (part == 'alt') {
+            } else if (part.toLowerCase() == 'alt') {
                 altKey = true;
+            } else if (part.toLowerCase() == 'shift') {
+                shiftKey = true;
             } else {
                 pressedKey = part;
             }
         }
-        launch_shortcut(pressedKey, metaKey, altKey, 'keydown')
+        launch_shortcut(pressedKey, metaKey, altKey, shiftKey, 'keydown')
 
     } else {
         //console.log('shortcut without +');
-        launch_shortcut(shortcut, false, false, 'keydown')
+        launch_shortcut(shortcut, false, false, false, 'keydown')
     }
 }
 
@@ -252,10 +255,10 @@ function type_text(input_text, currentUrl) {
         var elem = document.activeElement;
         console.log('type_text: on ' + elem + ' id: ' + elem.id);
 
-        if (elem.tagName.toLowerCase() === 'input') {
+        if (elem.tagName.toLowerCase() === 'inputaa') {
             elem.value = elem.value + input_text;  // works for <input> elems
         } else {
-            elem.innerText = elem.innerText + input_text;  // works for <input> elems
+            elem.innerText = elem.innerText + input_text;
         }
     }
 }
@@ -264,7 +267,7 @@ function type_text(input_text, currentUrl) {
 function triggerClick(elementSelector) {
     console.log('click: ' + elementSelector);
     var elem = null;
-    if (elementSelector === 'current') {
+    if (!elementSelector || elementSelector === 'current') {
         elem = document.activeElement;
     } else {
         elem = document.querySelector(elementSelector)
@@ -294,7 +297,7 @@ function focus_on_elem(elementSelector) {
 
 
 function gsheet_cell(chosen_cell) {
-    console.log('gsheet_cell: ' + chosen_cell);
+    console.log('gsheet_cell: [' + chosen_cell + ']');
 
     selectorField = document.getElementById('t-name-box');
     selectorField.value = chosen_cell;
@@ -302,7 +305,7 @@ function gsheet_cell(chosen_cell) {
     // now hit Enter to submit the change
     currChar = 'Enter';
     pressedKeyCode = getCharCode(currChar);
-    var e = new KeyboardEvent('keydown', {  //keypress to type in google docs
+    var e = new KeyboardEvent('keydown', {
             bubbles : true,
             char : currChar,
             code : currChar,
