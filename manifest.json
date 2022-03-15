@@ -3,11 +3,6 @@
   "description": "Webbu is your assistant for the browser",
   "version": "1.0",
   "manifest_version": 3,
-  // service worker is a script that your browser runs in the background,
-  // separate from a web page, opening the door to features that don't need a web page or user interaction
-  // Remember:
-  // a) service workers are terminated when not in use and restarted when needed
-  // b) service workers don't have access to DOM.
   "background": {
     "service_worker": "background.js"
   },
@@ -28,7 +23,6 @@
     "48": "/images/webbu_48.png",
     "128": "/images/webbu_128.png"
   },
-  // "options_page": "options.html",
   "commands": {
     "skill1": {
       "suggested_key": "Ctrl+Shift+1",
