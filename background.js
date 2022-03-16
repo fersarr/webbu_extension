@@ -37,6 +37,7 @@ function execute_skill(skill_name) {
 
         if (tabs.length < 1) {
             console.log('execute_skill: no active tab');
+            chrome.runtime.sendMessage({ error_msg: 'No active tab' });
             return;
         }
 

@@ -65,6 +65,7 @@ function search_skills_part2(tabs) {
             var skills = data['skills'];
             var steps = {}
             var max_skills = 3;
+            name_2_visible_ids_map = {}  // reset to match the shown skills
             for (idx = 0; idx < skills.length && idx < max_skills; ++idx) {
                 var curr_skill = skills[idx];
                 var skill_steps = curr_skill.steps;
@@ -216,10 +217,10 @@ function record_executed_skill(skill_visible_id, skill_number, trigger_method) {
         body: JSON.stringify({'current_url': current_url, 'row': skill_number, 'trigger': trigger_method})
     })
     .then(response => {
-        console.log('skill_executed: recorded');
+        console.log('record_executed_skill: recorded');
         console.log(response);
     }).catch((error) => {
-        console.log('skill_executed: failed');
+        console.log('record_executed_skill: failed');
         console.log(error);
     });
 }
@@ -237,11 +238,19 @@ function highlight_skill_in_ui(skill_number) {
 
 function skill_triggered_via_shortcut(skill_row_name) {
 
+    var visible_id = name_2_visible_ids_map[skill_row_name];
+    if (visible_id === undefined) {
+        // the user pressed shift+Ctrl+2 but there's
+        // only 1 skill in popup.html after the search
+        document.getElementById("display_msg").innerText = 'Invalid skill chosen';
+        document.getElementById("display_msg_div").style.display = 'block';  // make it visible
+        return;
+    }
+
     // highlight the skill in the UI
     var skill_number = skill_row_name.substr(skill_row_name.length - 1);  // number is the last character
     highlight_skill_in_ui(skill_number);
 
-    var visible_id = name_2_visible_ids_map[skill_row_name];
     record_executed_skill(visible_id, skill_number, 'sc');  // sc = 'keyboard shortcut'
 }
 
@@ -260,7 +269,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     } else if ('display_msg' in message) {
         document.getElementById("display_msg").innerText = message['display_msg'];
         document.getElementById("display_msg_div").style.display = 'block';  // make it visible
+    } else if ('error_msg' in message) {
+        document.getElementById("display_msg").innerText = message['error_msg'];
+        document.getElementById("display_msg_div").style.display = 'block';  // make it visible
     }
+
+    return true; // needed as a response to sendMessage? to avoid "the message port closed before a response was received"
 });
 
 
