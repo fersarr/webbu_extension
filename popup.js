@@ -9,7 +9,7 @@
 
 
 var webbu_url = 'https://webbu.app'
-// webbu_url = 'http://localhost:7002'  // DEPLOY-CHECK: dev debugging
+// webbu_url = 'http://localhost:7002'  // DEPLOY_CHECK: dev debugging
 
 var current_url = null;
 var name_2_visible_ids_map = {}

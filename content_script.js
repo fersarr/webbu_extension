@@ -3,6 +3,9 @@ This is the content script (or foreground script) for the browser extension.
 It can be injected into a site giving us the ability to control the DOM of that site
 */
 
+var webbu_url = 'https://webbu.app'
+// webbu_url = 'http://localhost:7002'  // DEPLOY_CHECK: dev debugging
+
 console.log('content_script: running');
 
 function getCharCode(key) {
@@ -132,6 +135,8 @@ function multi_commands(steps, currentUrl) {
             change_style(stepParam, stepParam2);
         } else if (stepType === 'display_msg') {
             display_msg(stepParam, currentUrl);
+        } else if (stepType === 'backend_steps') {
+            fetch_backend_steps(stepParam, currentUrl);
         }
     }
 }
@@ -452,3 +457,27 @@ chrome.storage.local.get(['currentUrl', 'lastSkill', 'steps', 'visible_ids'], fu
     multi_commands(curr_skill_steps, params.currentUrl);
 
 });
+
+
+function fetch_backend_steps(stepParam, currentUrl) {
+    console.log('fetch_backend_steps: ' + stepParam);
+    req_data = {};
+    fetch(webbu_url + '/get_backend_steps/' + stepParam, {
+        mode: 'cors',
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(response_json => {
+        console.log('fetch_backend_steps: success resp:');
+        console.log(response_json);
+
+        // now that we have the steps from the backend
+        // execute them as if they were normal steps
+        console.log('fetch_backend_steps: starting to execute');
+        multi_commands(response_json, currentUrl);
+
+    }).catch((error) => {
+        console.log('fetch_backend_steps: failed');
+        console.log(error);
+    });
+}
