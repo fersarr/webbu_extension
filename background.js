@@ -59,7 +59,7 @@ chrome.commands.onCommand.addListener((skill_name) => {
     console.log("skill_triggered: " + skill_name);
     execute_skill(skill_name);
 
-    // notify the extension that a skill was triggered
+    // notify the extension popup that a skill was triggered
     // in order to a) make highlight the skill in the UI
     // b) record it for stats in the backend
     chrome.runtime.sendMessage({ skill_triggered: skill_name });

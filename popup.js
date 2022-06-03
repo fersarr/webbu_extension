@@ -43,6 +43,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 function search_skills_part2(tabs) {
 
     let search_text = document.getElementById('search_skills_input').value;
+    chrome.storage.local.set({ 'user_query': search_text });
     console.log('search_skills_p2: t: "' + search_text + '" tabs: ' + tabs);
 
     current_url = tabs[0].url;
@@ -51,7 +52,7 @@ function search_skills_part2(tabs) {
         'current_url': current_url,
     }
 
-    document.getElementById('user_msg').innerHTML = 'Searching...';
+    document.getElementById('user_msg').innerText = 'Searching...';
 
     $.get(webbu_url + "/search", req_data,
         function(data, status){
@@ -105,7 +106,7 @@ function add_skill_row(skill, idx) {
     // title
     var skill_title = document.createElement("p");
     skill_title.className = 'skill_title';
-    skill_title.innerHTML = skill['title'];
+    skill_title.innerText = skill['title'];
     new_row.appendChild(skill_title);
 
     // bottom row
@@ -120,7 +121,7 @@ function add_skill_row(skill, idx) {
         // ctrl+shift+9 instead of ctrl+shift+3 because that's taken in macs and easier to access
         shortcut_num = 9;
     }
-    skill_shortcut.innerHTML = 'Ctrl+Shift+' + shortcut_num;
+    skill_shortcut.innerText = 'Ctrl+Shift+' + shortcut_num;
     new_row.appendChild(skill_shortcut);
 
     // bottom row right

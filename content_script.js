@@ -85,8 +85,8 @@ function parse_shortcut(shortcut) {
 }
 
 
-function multi_commands(steps, currentUrl) {
-    console.log('multi_commands: steps:' + steps + ' url: ' + currentUrl);
+function multi_commands(steps, currentUrl, userQuery) {
+    console.log('multi_commands: steps:' + steps + ' url: ' + currentUrl + ' userQuery: ' + userQuery);
     if (!steps) {
         console.log('multi_commands: steps is not defined, stopping');
         return;
@@ -109,7 +109,7 @@ function multi_commands(steps, currentUrl) {
                     console.log('finished delay at ' + new Date().toTimeString());
                     var remaining_steps = steps.slice(idx + 1);
                     if (remaining_steps.length > 0) {
-                        multi_commands(remaining_steps, currentUrl);
+                        multi_commands(remaining_steps, currentUrl, userQuery);
                     }
             }, delayAmount);
             break; // stop the for-loop
@@ -136,7 +136,7 @@ function multi_commands(steps, currentUrl) {
         } else if (stepType === 'display_msg') {
             display_msg(stepParam, currentUrl);
         } else if (stepType === 'backend_steps') {
-            fetch_backend_steps(stepParam, currentUrl);
+            fetch_backend_steps(stepParam, currentUrl, userQuery);
         }
     }
 }
@@ -434,7 +434,7 @@ function display_msg(message, currentUrl) {
 
 
 console.log('content_script: getting the skill that was triggered');
-chrome.storage.local.get(['currentUrl', 'lastSkill', 'steps', 'visible_ids'], function(params) {
+chrome.storage.local.get(['currentUrl', 'lastSkill', 'steps', 'visible_ids', 'user_query'], function(params) {
     console.log("content_script: params: ");
     console.log(params);
 
@@ -454,17 +454,21 @@ chrome.storage.local.get(['currentUrl', 'lastSkill', 'steps', 'visible_ids'], fu
 
     console.log('content_script: steps dict:');
     console.log(curr_skill_steps);
-    multi_commands(curr_skill_steps, params.currentUrl);
+    multi_commands(curr_skill_steps, params.currentUrl, params.user_query);
 
 });
 
 
-function fetch_backend_steps(stepParam, currentUrl) {
+function fetch_backend_steps(stepParam, currentUrl, userQuery) {
     console.log('fetch_backend_steps: ' + stepParam);
+
+    page_content = document.all[0].outerHTML;
+    console.log('fetch_backend_steps: user_query: ' + userQuery + ' page_content: ' + page_content.length);
     req_data = {};
     fetch(webbu_url + '/get_backend_steps/' + stepParam, {
         mode: 'cors',
-        method: 'GET',
+        method: 'POST',
+        body: JSON.stringify({'page_content': page_content, 'user_query': userQuery})
     })
     .then(response => response.json())
     .then(response_json => {
@@ -474,7 +478,7 @@ function fetch_backend_steps(stepParam, currentUrl) {
         // now that we have the steps from the backend
         // execute them as if they were normal steps
         console.log('fetch_backend_steps: starting to execute');
-        multi_commands(response_json, currentUrl);
+        multi_commands(response_json['steps'], currentUrl, userQuery);
 
     }).catch((error) => {
         console.log('fetch_backend_steps: failed');
